@@ -1,0 +1,4 @@
+sudo apt purge --autoremove -y debian-reference*  gnome-characters* gnome-weather* gnome-maps* nautilus gnome-sound-recorder*
+
+
+sudo apt install gnome* gnome-core* gnome-session* --no-install-recommends
