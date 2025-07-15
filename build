@@ -1,0 +1,24 @@
+#!/bin/bash
+
+while getopts "btn" option; do
+   case $option in
+      b) # HDD image
+            cp ./auto/bookworm ./auto/config
+            lb clean
+            lb config
+            lb build;;
+      t) # ISO image
+            cp ./auto/trixie ./auto/config
+            lb clean
+            lb config
+            lb build;;
+      n) # ISO image
+            cp ./auto/netinstall ./auto/config
+            lb clean
+            lb config
+            lb build;;
+     \?) # Invalid option
+         echo "Error: Invalid option"
+         exit;;
+   esac
+done
