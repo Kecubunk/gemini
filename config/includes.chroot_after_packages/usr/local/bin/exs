@@ -1,0 +1,21 @@
+#!/bin/bash
+
+tput setaf 3
+echo "Installing gnome-extensions"
+tput sgr0
+
+e 307 43 #dashtodock
+e 3210 43 #compiz lamp
+e 4648 43 #desktop cube
+e 3628 43 #arc menu
+e 3433 43 #flypie
+e 19 43 #user-themes
+e 1708 43 #transparent top bar
+e 3891 43 #simple monitor
+e 1160 43 #dash to panel
+e 5669 43 #compact top bar
+
+
+
+
+

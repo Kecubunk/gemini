@@ -1,0 +1,10 @@
+ANSI_COLOR="0;34"
+PRETTY_NAME="GeminiOS GNU/Linux 13 (trixie)"
+NAME="GeminiOS GNU/Linux"
+VERSION_ID="13"
+VERSION="13 (trixie)"
+VERSION_CODENAME=trixie
+ID=debian
+BUG_REPORT_URL="https://github.com/Kecubunk"
+HOME_URL="https://github.com/Kecubunk"
+SUPPORT_URL="https://github.com/Kecubunk"
