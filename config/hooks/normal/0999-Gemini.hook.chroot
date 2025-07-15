@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# Set as default to openbox
+update-alternatives --set x-session-manager /usr/bin/openbox-session
+
+# Install system info dependences
+wget -P /usr/bin "https://raw.githubusercontent.com/pixelb/ps_mem/master/ps_mem.py" && chmod a+x /usr/bin/ps_mem.py
+wget -P /usr/bin "https://raw.githubusercontent.com/aristocratos/bashtop/master/bashtop" && chmod a+x /usr/bin/bashtop
+apt-get install -y s-tui dfc htop hwinfo
+
+# Set python3 as default
+update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+mv /usr/lib/python3.13/EXTERNALLY-MANAGED /usr/lib/python3.13/EXTERNALLY-MANAGED.old
+
+#bookworm
+#mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old
+
+# Add Flatpack
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+#bookworm
+#sed -i 's|Install Debian|Install-GeminiOS|g' /usr/share/applications/install-debian.desktop
+#sed -i 's|Debian Live|GeminiOS|g' /usr/share/applications/install-debian.desktop
+
+#trixie
+sed -i 's|Install Debian|Install-GeminiOS|g' /usr/share/applications/calamares-install-debian.desktop
+sed -i 's|Debian Live|GeminiOS Live|g' /usr/share/applications/calamares-install-debian.desktop
+
+### Install https://github.com/Antynea/grub-btrfs
+cd /usr/share/grub-btrfs
+make install
+rm -R /usr/share/grub-btrfs
+systemctl enable grub-btrfsd
+
+### GRUB 2.06 menu generation doesn't run `os-prober` without this:
+printf "\nGRUB_DISABLE_OS_PROBER=false\n" >> /etc/default/grub
+
+#Update Grub
+#update-grub
+
+### https://www.reddit.com/r/debian/comments/14rd64o/hyperv_gen_2_debian_12_wluks_unable_to_boot/jtc9vv4/
+echo "hyperv_keyboard" >> /etc/initramfs-tools/modules
+
+### add compression level to initramfs
+cat <<EOF>> /etc/initramfs-tools/initramfs.conf
+COMPRESSLEVEL=22
+EOF
+
+### Disable Gnome Software automatic updates and change lockscreen wallpaper
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+########### Install starship ##########################
+#curl -sS https://starship.rs/install.sh | sh
+curl -sS https://starship.rs/install.sh | sh -s -- -y
+wget -P /usr/share/fonts/JetBrainsMono https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip && cd /usr/share/fonts/JetBrainsMono/ && unzip JetBrainsMono.zip && rm JetBrainsMono.zip && fc-cache -fv
+cd
+wget https://raw.githubusercontent.com/Kecubunk/mybash/main/config.txt
+cat config.txt >> ~/.bashrc
+cat config.txt >> /etc/skel/.bashrc
+mkdir /etc/skel/.config/
+wget -P /etc/skel/.config/ https://raw.githubusercontent.com/Kecubunk/mybash/main/starship.toml
+wget -P ~/.config/ https://raw.githubusercontent.com/Kecubunk/mybash/main/starship.toml
+rm -f config.txt
+
+########## olama support ##########################
+#curl -fsSL https://ollama.com/install.sh | sh
+
+############### Add openjdk 8 #########################################
+wget http://www.mirbsd.org/~tg/Debs/sources.txt/wtf-bookworm.sources
+mv wtf-bookworm.sources /etc/apt/sources.list.d/
+apt install openjdk-8-jdk
+
+## install easyeda
+cd /opt/e
+./install.sh
+cd ..
+cd ..
+rm -rf /opt/e/
+
+#ln -s /opt/AppyBuilder/appy /usr/bin/appy
+
+apt update && apt upgrade
+
+fc-cache -fv
+
+#Enable zramswap
+apt install zram-tools
+systemctl enable zramswap
+
+# correcting permission
+chmod 0755 $HOME/.config/
+
+# Remove history
+rm -f ~/.bash_history
+rm -f /root/.bash_history
+
