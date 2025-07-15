@@ -1,0 +1,68 @@
+#!/bin/bash
+
+OS="GeminiOS"
+DIST="trixie"
+VER="13.0"
+PREP="Cahyo Hertanto"
+set -e 
+
+lb config noauto \
+	--distribution "$DIST" \
+	--architecture amd64  \
+	--apt-recommends 'false' \
+ 	--linux-flavours 'amd64' \
+ 	--checksums 'md5' \
+    --chroot-squashfs-compression-level 22 \
+    --chroot-squashfs-compression-type zstd \
+    --clean \
+ 	--archive-areas "main non-free-firmware" \ 
+ 	--debian-installer live \
+ 	--debian-installer-gui true \
+ 	--mirror-binary " http://deb.debian.org/debian/ " \
+ 	--mirror-binary-security "https://security.debian.org/debian-security" \
+ 	--mirror-bootstrap "https://deb.debian.org/debian" \
+ 	--debootstrap-options "--variant=minbase --include=apt-transport-https,ca-certificates,openssl" \
+ 	--distribution "$DIST" \
+ 	--debconf-frontend "noninteractive" \
+	--swap-file-size 4096 \
+	--firmware-binary true \
+	--firmware-chroot true \
+	--initramfs live-boot \
+    --interactive true \
+    --image-name "$OS"-"$DIST"-"$VER" \
+    --iso-application "$OS" \
+    --iso-preparer "$PREP" \
+    --iso-publisher "$OS"-"$DIST" GNU/Linux \
+    --iso-volume "$OS"-"$DIST"-"$VER" \
+	--binary-images iso-hybrid \
+	--uefi-secure-boot auto \
+	--updates 'false' \
+	--security 'false' \
+	--source 'true' \
+	--bootappend-live "boot=live config splash" \
+	--win32-loader true \
+	--zsync false \
+
+ "${@}"       
+      
+#Original trixie
+#lb config noauto\
+#    --mirror-bootstrap http://deb.debian.org/debian/ \
+#    --mirror-binary http://deb.debian.org/debian/ \
+#    --security false \
+#    --updates false \
+#   --distribution trixie \
+#    --debian-installer live \
+#    --debian-installer-distribution trixie \
+#    --cache-packages false \
+#    --archive-areas main non-free-firmware \
+#    --iso-volume d-live trixie-DI-rc2 ld amd64 \
+#    --architecture amd64 \
+#    --source true
+#    --binary-filesystem ext4 \
+      
+      
+      
+      	#--bootappend-live "boot=live swap config username=gemini live-config.hostname=GeminiOS live-config.hostname=GeminiOS live-config.user-default-groups=audio,cdrom,floppy,video,dip,plugdev,scanner,bluetooth,netdev,sudo,dialout,lp,lpadmin components persistence locales=en_US.UTF-8 \
+#keyboard-layouts=pc105 timezone=Asia/Jakarta splash quiet" \
+          #--archive-areas "main contrib non-free non-free-firmware" \ bookworm #  

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+OS="GeminiOS"
+DE="Openbox"
+DIST="bookworm"
+VER="12.11"
+PREP="Cahyo Hertanto"
+
+set -e
+
+lb config noauto\
+    --distribution "$DIST"\
+    --architecture amd64 \
+    --debian-installer netinst \
+    --archive-areas "main contrib non-free non-free-firmware" \
+    --chroot-filesystem squashfs \
+    --binary-images iso-hybrid \
+    --bootloader grub-efi \
+    --memtest none \
+    --backports false \
+    --updates false \
+    --security false \
+    --parent-distribution "$DIST" \
+    --parent-debian-installer-distribution "$DIST" \
+    --debian-installer-gui false \
+    --apt-recommends true \
+    --apt-secure true \
+    --apt-indices true \
+    --iso-application "$OS-$DE-$DIST_net" \
+    --iso-volume "$OS-$DE-$DIST_net" \
+    "${@}"

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+OS="GeminiOS"
+DE="OpenboxMix"
+DIST="bookworm"
+VER="12.11"
+PREP="Cahyo Hertanto"
+
+set -e 
+
+lb config noauto \
+	--distribution "$DIST" \
+	--architecture amd64  \
+    --apt-recommends 'false' \
+    --apt-source-archives 'false' \
+    --apt-indices 'false' \
+ 	--checksums 'md5' \
+    --chroot-squashfs-compression-level 22 \
+    --chroot-squashfs-compression-type zstd \
+	--archive-areas "main contrib non-free non-free-firmware" \
+ 	--debian-installer live \
+ 	--debian-installer-gui true \
+ 	--debootstrap-options "--variant=minbase" \
+ 	--distribution "$DIST" \
+ 	--debconf-frontend "noninteractive" \
+	--swap-file-size 4096 \
+	--firmware-binary true \
+	--firmware-chroot true \
+	--update 'true' \
+    --image-name "$OS"-"$DIST"-"$DE"-"$VER" \
+    --iso-application "$OS" \
+    --iso-preparer "$PREP" \
+    --iso-publisher "$OS"-"$DIST" GNU/Linux \
+    --iso-volume "$OS"-"$DIST"-"$VER" \
+	--binary-images iso-hybrid \
+	--uefi-secure-boot auto \
+	--updates true \
+	--win32-loader true \
+	--zsync false \
+
+ "${@}"     
+       #--interactive true \
+      #	--bootappend-live "boot=live swap config username=enigma live-config.hostname=EnigmaOS live-config.hostname=EnigmaOS live-config.user-default-groups=audio,cdrom,floppy,video,dip,plugdev,scanner,bluetooth,netdev,sudo,dialout,lp,lpadmin components persistence locales=en_US.UTF-8 \
+#keyboard-layouts=pc105 timezone=Asia/Jakarta splash " \
+      
+    #--mirror-binary " http://deb.debian.org/debian/ " \
+ 	#--mirror-binary-security "https://security.debian.org/debian-security" \
+ 	#--mirror-bootstrap "https://deb.debian.org/debian" \
